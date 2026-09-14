@@ -3,6 +3,7 @@ import sys
 
 from util import Node, StackFrontier, QueueFrontier
 
+# these store all the read data from the csvs in a dict
 # Maps names to a set of corresponding person_ids
 names = {}
 
@@ -12,7 +13,7 @@ people = {}
 # Maps movie_ids to a dictionary of: title, year, stars (a set of person_ids)
 movies = {}
 
-
+# this already loads csv data into data structures
 def load_data(directory):
     """
     Load data from CSV files into memory.
@@ -51,7 +52,10 @@ def load_data(directory):
             except KeyError:
                 pass
 
-
+# loads data into memory (directory specified in cli), 
+# prompts user to type in two names (handles same name, etc)
+# then this called "shortest_path" function to compute shortest path
+# prints out path, (you implement the shortest path function)
 def main():
     if len(sys.argv) > 2:
         sys.exit("Usage: python degrees.py [directory]")
@@ -84,6 +88,7 @@ def main():
             print(f"{i + 1}: {person1} and {person2} starred in {movie}")
 
 
+# YOUR JOB!!! (read spec)
 def shortest_path(source, target):
     """
     Returns the shortest list of (movie_id, person_id) pairs
@@ -91,9 +96,36 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    # source and target are person_ids
+    # using BFS since it guarantees shortest path for unweighted
+    frontier = QueueFrontier()
+    # adds all neighbours for source into frontier (BFS)
+    temp = neighbors_for_person(source)
+    for neighbor in temp:
+        frontier.add(neighbor)
 
-    # TODO
-    raise NotImplementedError
+    # main logic loop (basically the condition to remove from the frontier)
+    # LOOK AT SAMPLE CODE GIVEN
+    if frontier.empty == False:
+        for current in frontier:
+            if current == target:
+                # quits here (how does it get the path now?)
+                pass
+            # else, should add to "discovered" stack
+            temp = neighbors_for_person(current)
+            for neighbor in temp:
+                if neighbor == target:
+                    # quit here
+                    pass
+                # continue growing frontier
+                frontier.add(neighbor)
+    else:
+        return None
+
+
+    
+
+    #raise NotImplementedError
 
 
 def person_id_for_name(name):
