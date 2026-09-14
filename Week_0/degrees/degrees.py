@@ -101,20 +101,25 @@ def shortest_path(source, target):
     frontier = QueueFrontier()
     # adds all neighbours for source into frontier (BFS)
     temp = neighbors_for_person(source)
+    
     for neighbor in temp:
+        # frontier properly loads in
         frontier.add(neighbor)
 
     # main logic loop (basically the condition to remove from the frontier)
-    # LOOK AT SAMPLE CODE GIVEN
-    if frontier.empty == False:
-        for current in frontier:
-            if current == target:
+    # Frontier properly loads up when target not found
+    if frontier.empty() == False:
+        for current in frontier.frontier:
+            # current[1] is the actor id
+            if current[1] == target:
                 # quits here (how does it get the path now?)
+                # ok this works properly, just need to track degrees
+                # will do so with node struct
                 pass
-            # else, should add to "discovered" stack
-            temp = neighbors_for_person(current)
+            # else, should add to "discovered" stack (why do we need?)
+            temp = neighbors_for_person(current[1])
             for neighbor in temp:
-                if neighbor == target:
+                if neighbor[1] == target:
                     # quit here
                     pass
                 # continue growing frontier
